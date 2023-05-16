@@ -1,14 +1,27 @@
 <script>
   import Editable from "./Editable.svelte";
-
+  import { taskListStore } from "../../stores/tasks";
   export let task;
+  export let listIdx;
+
   let value = task.text;
 
+  function updateTask(event) {
+    console.log(`
+      List Idx: ${listIdx}
+      Task ID: ${task.id}
+      Update value: ${event.detail.taskText}
+    `);
+    taskListStore.updateTask({
+      id: task.id,
+      text: event.detail.taskText
+    }, listIdx)
+  }
 </script>
 
 <div class="flex-it border border-solid p-2 rounded-xl bg-slate-500 mb-2 cursor-pointer">
   <div class="flex-it">
-    <Editable bind:value on:editCancel>
+    <Editable bind:value on:editCancel={updateTask}>
       <div class="flex-it flex-row">
         <div class="flex flex-1">{task.text}</div>
         <div class="flex items-end hover:text-red-600">
