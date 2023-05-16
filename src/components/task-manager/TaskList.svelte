@@ -1,7 +1,13 @@
 <script>
   import TaskItem from "./TaskItem.svelte";
+
   export let listName;
   export let tasks;
+
+  function updateItem(event) {
+     //event.detail
+    alert(`Should update item: ${event.detail.taskText}`);
+  }
 </script>
 
 <div class="flex-it h-full w-80 max-w-sm min-h-full m-2 my-0">
@@ -29,9 +35,10 @@
         </div>
       </div>
     </div>
+
     <div class="overflow-x-hidden overflow-y-auto with-scrollbar p-2">
       {#each tasks as task (task.id)}
-        <TaskItem {task} />
+        <TaskItem {task} on:editCancel={updateItem} />
       {/each}
     </div>
     <button class="underline flex p-2"> + Add Task </button>

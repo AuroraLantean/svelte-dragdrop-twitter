@@ -9,8 +9,8 @@
 
 {#if isEditing}
   <div class="flex-it">
-    <!-- <textarea bind:value={value} /> -->
     <textarea bind:value />
+    <!-- <textarea bind:value={value} /> -->
     <button
       on:click={() => {
         isEditing = false;
