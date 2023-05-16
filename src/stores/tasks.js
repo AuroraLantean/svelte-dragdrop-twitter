@@ -49,8 +49,7 @@ const DEFAUL_DATA = [
 ];
 function createStore() {
   const taskList = writable(DEFAUL_DATA);
-  const { subscribe } = taskList;
-
+  const { subscribe, update } = taskList;
   //return taskList;
   //or
   //can limit methods to only subscribe or ...
@@ -66,12 +65,37 @@ function createStore() {
         })
       }
       ----------== */
-      taskList.update((list) => {
+      update((list) => {
         const taskIdx = list[listIdx].items.findIndex((item) => item.id === task.id);
 
         if (taskIdx > -1) {
           list[listIdx].items[taskIdx] = { ...task };
         }
+
+        return list;
+      });
+    },
+    addList: () => {
+      update((list) => [
+        ...list,
+        {
+          id: new Date().toISOString(),
+          text: "New List",
+          items: []
+        }
+      ]);
+    },
+    addTask: (listIdx) => {
+      update((list) => {
+        const { items } = list[listIdx];
+
+        list[listIdx].items = [
+          ...items,
+          {
+            id: new Date().toISOString(),
+            text: "What to do?"
+          }
+        ];
 
         return list;
       });
