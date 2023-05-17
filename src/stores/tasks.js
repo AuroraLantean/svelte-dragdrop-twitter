@@ -18,7 +18,7 @@ import { writable } from "svelte/store";
   });
   return taskList;
 }*/
-const DEFAUL_DATA = [
+const DEFAULT_DATA = [
   {
     id: "l-1",
     text: "List 1",
@@ -48,7 +48,12 @@ const DEFAUL_DATA = [
   }
 ];
 function createStore() {
-  const taskList = writable(DEFAUL_DATA);
+  //const taskList = writable(DEFAULTT_DATA);
+  const storedList = localStorage.getItem("task-manager-store");
+  const _taskList = storedList ? JSON.parse(storedList) : DEFAULT_DATA;
+
+  const taskList = writable(_taskList);
+
   const { subscribe, update } = taskList;
   //return taskList;
   //or
@@ -101,12 +106,39 @@ function createStore() {
       });
     },
     moveTask: (sourceData, moveToListIdx) => {
-      update(list => {
+      update((list) => {
         const [task] = list[sourceData.listIdx].items.splice(sourceData.taskIdx, 1);
         list[moveToListIdx].items.push(task);
         return list;
-      })
+      });
+    },
+    removeTask: (listIdx, taskIdx) => {
+      update((list) => {
+        // list[listIdx].items.splice(taskIdx, 1);
+
+        list[listIdx].items = list[listIdx].items.filter((_, id) => id !== taskIdx);
+
+        return list;
+      });
+    },
+    removeList: (listIdx) => {
+      update((list) => {
+        list.splice(listIdx, 1);
+        return list;
+      });
+    },
+    updateList: (newText, listIdx) => {
+      update((list) => {
+        list[listIdx].text = newText;
+        return list;
+      });
     }
   };
 }
 export const taskListStore = createStore();
+
+taskListStore.subscribe((list) => {
+  if (list) {
+    localStorage.setItem("task-manager-store", JSON.stringify(list));
+  }
+});

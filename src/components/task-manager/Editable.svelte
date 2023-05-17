@@ -15,7 +15,7 @@
       on:click={() => {
         isEditing = false;
         dispatch("editCancel", {
-          taskText: value
+          value
         });
       }}
       class="flex underline"
