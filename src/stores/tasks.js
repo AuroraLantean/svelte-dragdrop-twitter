@@ -99,6 +99,13 @@ function createStore() {
 
         return list;
       });
+    },
+    moveTask: (sourceData, moveToListIdx) => {
+      update(list => {
+        const [task] = list[sourceData.listIdx].items.splice(sourceData.taskIdx, 1);
+        list[moveToListIdx].items.push(task);
+        return list;
+      })
     }
   };
 }
