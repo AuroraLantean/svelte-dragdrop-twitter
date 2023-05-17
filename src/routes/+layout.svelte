@@ -1,6 +1,6 @@
 <script>
   import "../app.css";
-  console.log("layout");
+  console.log("task-manager layout");
 </script>
 
 <slot />
