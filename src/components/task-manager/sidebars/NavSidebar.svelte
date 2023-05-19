@@ -5,6 +5,9 @@
   import TiBell from "svelte-icons/ti/TiBell.svelte";
   import TiZoomOutline from "svelte-icons/ti/TiZoomOutline.svelte";
   import TiSocialFlickr from "svelte-icons/ti/TiSocialFlickr.svelte";
+
+  import { navLinks } from "./navLinks";
+  console.log(navLinks);
 </script>
 
 <header class="lg:flex-grow flex-it items-end">
@@ -35,62 +38,22 @@
                   </div>
                 </div>
               </a>
-              <a class="flex-it items-start flex-grow w-full" href="/">
-                <div
-                  class="p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200"
-                >
-                  <div class="flex-it">
-                    <div class="icon">
-                      <TiGroupOutline />
+              {#each navLinks as link}
+                <a class="flex-it items-start flex-grow w-full" href={link.href}>
+                  <div
+                    class="p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200"
+                  >
+                    <div class="flex-it">
+                      <div class="icon">
+                        <svelte:component this={link.icon} />
+                      </div>
+                    </div>
+                    <div class="mx-4 text-2xl truncate xl:block hidden">
+                      <span class="truncate">{link.name}</span>
                     </div>
                   </div>
-                  <div class="mx-4 text-2xl truncate xl:block hidden">
-                    <span class="truncate">Profile</span>
-                  </div>
-                </div>
-              </a>
-              <a class="flex-it items-start flex-grow w-full" href="/">
-                <div
-                  class="p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200"
-                >
-                  <div class="flex-it">
-                    <div class="icon">
-                      <TiCogOutline />
-                    </div>
-                  </div>
-                  <div class="mx-4 text-2xl truncate xl:block hidden">
-                    <span class="truncate">More</span>
-                  </div>
-                </div>
-              </a>
-              <a class="flex-it items-start flex-grow w-full" href="/">
-                <div
-                  class="p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200"
-                >
-                  <div class="flex-it">
-                    <div class="icon">
-                      <TiBell />
-                    </div>
-                  </div>
-                  <div class="mx-4 text-2xl truncate xl:block hidden">
-                    <span class="truncate">Notification</span>
-                  </div>
-                </div>
-              </a>
-              <a class="flex-it items-start flex-grow w-full" href="/">
-                <div
-                  class="p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200"
-                >
-                  <div class="flex-it">
-                    <div class="icon">
-                      <TiZoomOutline />
-                    </div>
-                  </div>
-                  <div class="mx-4 text-2xl truncate xl:block hidden">
-                    <span class="truncate">Discover</span>
-                  </div>
-                </div>
-              </a>
+                </a>
+              {/each}
             </nav>
           </div>
           <!-- GLIDER SEND-MESSAGE BUTTON -->
