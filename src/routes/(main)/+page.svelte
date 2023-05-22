@@ -8,6 +8,7 @@
   let glides = [];
   let glideContent = "";
   let glideInput;
+
   onMount(() => glideInput.focus())
 
   function createGlide() {
