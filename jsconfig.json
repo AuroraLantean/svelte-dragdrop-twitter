@@ -2,9 +2,13 @@
 {
   "extends": "./.svelte-kit/tsconfig.json",
   "compilerOptions": {
+    "verbatimModuleSyntax": true,
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
       "@components/*": ["./src/components/*"],
+      "@actions/*": ["./src/actions/*"],
+      "@stores/*": ["./src/stores/*"],
     }
   },
   "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.svelte"]

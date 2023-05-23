@@ -29,7 +29,7 @@
     glideContent = "";
   }
 
-  function on_enterkey_up(event) {
+  function onEnterKeyUp(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       // By using `preventDefault`, it tells the Browser not to handle the key stroke for its own shortcuts or text input.
@@ -57,7 +57,7 @@
   <div class="flex-it flex-grow">
     <div class="flex-it">
       <textarea
-        on:keyup={on_enterkey_up}
+        on:keyup={onEnterKeyUp}
         bind:value={glideContent}
         bind:this={glideInput}
         name="content"
