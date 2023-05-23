@@ -1,13 +1,20 @@
 <script>
-  import { createFormStore } from "@stores/createFormStore";
+  import {
+    createFormStore,
+    maxLengthValidator,
+    firstUppercaseLetter,
+    minLengthValidator,
+    requiredValidator
+  } from "@stores/createFormStore";
+  import FormErrors from "./FormErrors.svelte";
 
   const { validate, form, errors } = createFormStore({
-    fullName: "",
-    nickName: "",
-    email: "",
-    avatar: "",
-    password: "",
-    passwordConfirmation: ""
+    fullName: "Leonardo Dicaprio",
+    nickName: "Leo",
+    email: "leo@dicaprio.com",
+    avatar: "https://dicaprio.com/leo",
+    password: "111",
+    passwordConfirmation: "111"
   });
 
   function submitForm() {
@@ -18,11 +25,11 @@
       event.preventDefault();
       // By using `preventDefault`, it tells the Browser not to handle the key stroke for its own shortcuts or text input.
       console.log("enter is detected");
-      submitForm()
+      submitForm();
     }
   }
 </script>
-{JSON.stringify($errors)}
+
 <form class="flex-it">
   <div class="flex-it overflow-hidden sm:rounded-md">
     <div class="flex-it">
@@ -31,63 +38,69 @@
           <label for="fullName" class="block text-sm font-medium text-gray-700"> Full Name </label>
           <input
             bind:value={$form.fullName}
-            use:validate={[1]}
+            use:validate={[
+              requiredValidator,
+              (ele) => minLengthValidator(ele, 5),
+              firstUppercaseLetter
+            ]}
             type="text"
             name="fullName"
             id="fullName"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
-          <div class="flex-it grow text-xs bg-red-400 text-white p-3 pl-3 mt-1 rounded-md">
-            Error Error Beep Beep!
-          </div>
+          <FormErrors errors={$errors.fullName} />
         </div>
 
         <div class="flex-it py-2">
           <label for="nickName" class="block text-sm font-medium text-gray-700"> Nick Name </label>
           <input
             bind:value={$form.nickName}
-            use:validate={[2]}
+            use:validate={[requiredValidator, (ele) => minLengthValidator(ele, 3)]}
             type="text"
             name="nickName"
             id="nickName"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
+          <FormErrors errors={$errors.nickName} />
         </div>
 
         <div class="flex-it py-2">
           <label for="email" class="block text-sm font-medium text-gray-700"> Email </label>
           <input
             bind:value={$form.email}
-            use:validate={[3]}
+            use:validate={[requiredValidator]}
             type="text"
             name="email"
             id="email"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
+          <FormErrors errors={$errors.email} />
         </div>
 
         <div class="flex-it py-2">
           <label for="avatar" class="block text-sm font-medium text-gray-700"> Avatar </label>
           <input
             bind:value={$form.avatar}
-            use:validate={[4]}
+            use:validate={[requiredValidator]}
             type="text"
             name="avatar"
             id="avatar"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
+          <FormErrors errors={$errors.avatar} />
         </div>
 
         <div class="flex-it py-2">
           <label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
           <input
             bind:value={$form.password}
-            use:validate={[5]}
+            use:validate={[requiredValidator]}
             type="password"
             name="password"
             id="password"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
+          <FormErrors errors={$errors.password} />
         </div>
 
         <div class="flex-it py-2">
@@ -96,13 +109,14 @@
           </label>
           <input
             bind:value={$form.passwordConfirmation}
-            use:validate={[6]}
+            use:validate={[requiredValidator]}
             on:keyup={onEnterKeyUp}
             type="password"
             name="passwordConfirmation"
             id="passwordConfirmation"
             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
           />
+          <FormErrors errors={$errors.passwordConfirmation} />
         </div>
       </div>
     </div>

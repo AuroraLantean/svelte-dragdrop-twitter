@@ -1,5 +1,9 @@
 <script>
-  import { createFormStore } from "@stores/createFormStore";
+  import { createFormStore,
+    maxLengthValidator,
+    firstUppercaseLetter,
+    minLengthValidator,
+    requiredValidator } from "@stores/createFormStore";
 
   const { validate, form } = createFormStore({
     email: "",
