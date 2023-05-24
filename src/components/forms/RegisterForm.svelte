@@ -4,28 +4,31 @@
     maxLengthValidator,
     firstUppercaseLetter,
     minLengthValidator,
-    requiredValidator
+    requiredValidator,
+    compareWithValidator
   } from "@stores/createFormStore";
   import FormErrors from "./FormErrors.svelte";
 
-  const { validate, form, errors } = createFormStore({
-    fullName: "Leonardo Dicaprio",
-    nickName: "Leo",
-    email: "leo@dicaprio.com",
-    avatar: "https://dicaprio.com/leo",
-    password: "111",
-    passwordConfirmation: "111"
+// form is removed, because it enables direct access to the form store via  bind:value={$form.fullName}. better use event to set form store
+  const { validate, submitForm, setValue, errors } = createFormStore({
+    fullName: "",
+    nickName: "",
+    email: "",
+    avatar: "",
+    password: "",
+    passwordConfirmation: ""
   });
 
-  function submitForm() {
-    alert(JSON.stringify($form));
+  //this is a callback function, whose argument will be given inside the caller function!
+  function handleFormSubmit(formData) {
+    alert(JSON.stringify(formData));
   }
   function onEnterKeyUp(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       // By using `preventDefault`, it tells the Browser not to handle the key stroke for its own shortcuts or text input.
       console.log("enter is detected");
-      submitForm();
+      submitForm(handleFormSubmit)();
     }
   }
 </script>
@@ -37,7 +40,7 @@
         <div class="flex-it py-2">
           <label for="fullName" class="block text-sm font-medium text-gray-700"> Full Name </label>
           <input
-            bind:value={$form.fullName}
+            on:input={setValue}
             use:validate={[
               requiredValidator,
               (ele) => minLengthValidator(ele, 5),
@@ -54,7 +57,7 @@
         <div class="flex-it py-2">
           <label for="nickName" class="block text-sm font-medium text-gray-700"> Nick Name </label>
           <input
-            bind:value={$form.nickName}
+            on:input={setValue}
             use:validate={[requiredValidator, (ele) => minLengthValidator(ele, 3)]}
             type="text"
             name="nickName"
@@ -67,7 +70,7 @@
         <div class="flex-it py-2">
           <label for="email" class="block text-sm font-medium text-gray-700"> Email </label>
           <input
-            bind:value={$form.email}
+            on:input={setValue}
             use:validate={[requiredValidator]}
             type="text"
             name="email"
@@ -80,7 +83,7 @@
         <div class="flex-it py-2">
           <label for="avatar" class="block text-sm font-medium text-gray-700"> Avatar </label>
           <input
-            bind:value={$form.avatar}
+            on:input={setValue}
             use:validate={[requiredValidator]}
             type="text"
             name="avatar"
@@ -93,7 +96,7 @@
         <div class="flex-it py-2">
           <label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
           <input
-            bind:value={$form.password}
+            on:input={setValue}
             use:validate={[requiredValidator]}
             type="password"
             name="password"
@@ -108,8 +111,11 @@
             Password Confirmation
           </label>
           <input
-            bind:value={$form.passwordConfirmation}
-            use:validate={[requiredValidator]}
+            on:input={setValue}
+            use:validate={[
+              requiredValidator,
+              (ele) => compareWithValidator(ele, "password")
+              ]}
             on:keyup={onEnterKeyUp}
             type="password"
             name="passwordConfirmation"
@@ -126,7 +132,7 @@
     </div>
     <div class="flex-it py-2">
       <button
-        on:click={submitForm}
+        on:click={submitForm(handleFormSubmit)}
         type="button"
         class="
             bg-blue-400 hover:bg-blue-500 focus:ring-0
