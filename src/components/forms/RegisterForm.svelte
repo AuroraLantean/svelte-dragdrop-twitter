@@ -19,16 +19,17 @@
     passwordConfirmation: ""
   });
 
+  export let onFormSubmit;
   //this is a callback function, whose argument will be given inside the caller function!
-  function handleFormSubmit(formData) {
+  /*function handleFormSubmit(formData) {
     alert(JSON.stringify(formData));
-  }
+  }*/
   function onEnterKeyUp(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       // By using `preventDefault`, it tells the Browser not to handle the key stroke for its own shortcuts or text input.
       console.log("enter is detected");
-      submitForm(handleFormSubmit)();
+      submitForm(onFormSubmit)();
     }
   }
 </script>
@@ -132,7 +133,7 @@
     </div>
     <div class="flex-it py-2">
       <button
-        on:click={submitForm(handleFormSubmit)}
+        on:click={submitForm(onFormSubmit)}
         type="button"
         class="
             bg-blue-400 hover:bg-blue-500 focus:ring-0

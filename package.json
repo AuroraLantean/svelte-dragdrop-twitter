@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"firebase": "^9.22.0",
 		"svelte-icons": "^2.1.0"
 	}
 }

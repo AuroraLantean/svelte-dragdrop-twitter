@@ -141,8 +141,8 @@ export const compareWithValidator = (element, compareToFieldName) => (form) => {
 
 export const requiredValidator =
   ({ name, value }) =>
-  (form) => {
-    console.log(form);
+  () => {
+    //(form) ... console.log(form);
     return value.length === 0 ? `${splitCamel(name)} is required` : "";
   };
 
