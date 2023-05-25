@@ -3,18 +3,56 @@
   import { getAuthContext } from "@components/context/auth";
   import { getUIContext } from "@components/context/UI";
   import TiImageOutline from "svelte-icons/ti/TiImageOutline.svelte";
+  import { dbAddPost } from "@api/glides";
+
+  export let uiAddPost;
+
   const { auth } = getAuthContext();
   $: user = $auth?.user;
+  $: btnDisabled = loading || form.content === "";
 
   const { addSnackbar } = getUIContext();
-
-  let glideContent = "";
+  let form = { content: "" };
+  let loading = false;
   let glideInput;
   onMount(() => glideInput.focus());
 
-  function createGlide() {
-    console.log("Should create a new glide!");
-    addSnackbar("Glide Created!", "success");
+  async function submitGlide() {
+    console.log("submitGlide()");
+    loading = true;
+
+    let mesg = form.content;
+    if (mesg.slice(-1) === "\n") {
+      mesg = mesg.slice(0, -1);
+    }
+    // Making request to store the glide to FS
+    const glideData = {
+      ...form,
+      content: mesg,
+      uid: user.uid
+    };
+    /*await new Promise((res) => {
+      setTimeout(() => {
+        res(true);
+      }, 1000);
+    });*/
+
+    try {
+      const glide = await dbAddPost(glideData);
+      console.log("Messenger/glide:", glide);
+
+      const userData = {
+        nickName: user.nickName,
+        avatar: user.avatar
+      };
+      uiAddPost({...glide, user: userData });
+      addSnackbar("Glide Created!", "success");
+      form.content = "";
+    } catch (e) {
+      addSnackbar(e.message, "error");
+    } finally {
+      loading = false;
+    }
   }
   /**
     console.log("CreateGlide:", glideContent);
@@ -33,12 +71,12 @@
     glides = [glide, ...glides]; //glides.push(glideContent) will not update glides array
     glideContent = "";
   */
-  function onEnterKeyUp(event) {
+  async function onEnterKeyUp(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       // By using `preventDefault`, it tells the Browser not to handle the key stroke for its own shortcuts or text input.
       console.log("enter is detected");
-      createGlide();
+      await submitGlide();
     }
   }
 </script>
@@ -53,7 +91,7 @@
   <div class="flex-it flex-grow">
     <div class="flex-it">
       <textarea
-        bind:value={glideContent}
+        bind:value={form.content}
         on:keyup={onEnterKeyUp}
         bind:this={glideInput}
         name="content"
@@ -74,7 +112,8 @@
       </div>
       <div class="flex-it w-32 mt-3 cursor-pointer">
         <button
-          on:click={createGlide}
+          on:click={submitGlide}
+          disabled={btnDisabled}
           type="button"
           class="
           disabled:cursor-not-allowed disabled:bg-gray-400

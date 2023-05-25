@@ -2,6 +2,8 @@
   import TiTrash from "svelte-icons/ti/TiTrash.svelte";
   import TiMessage from "svelte-icons/ti/TiMessage.svelte";
   import TiHeartOutline from "svelte-icons/ti/TiHeartOutline.svelte";
+  import moment from "moment";
+
   export let glide;
 </script>
 
@@ -11,11 +13,7 @@
       <div
         class="w-12 h-12 overflow-visible cursor-pointer transition duration-200 hover:opacity-80"
       >
-        <img
-          alt=""
-          class="rounded-full"
-          src={glide.user.avatar}
-        />
+        <img alt="" class="rounded-full" src={glide.user.avatar} />
       </div>
     </div>
     <article class="flex-it flex-grow flex-shrink cursor-pointer">
@@ -24,7 +22,9 @@
           <div>
             <span class="font-bold">{glide.user.nickName}</span>
             <span class="mx-2">&#8226;</span>
-            <span class="text-gray-400">2h</span>
+            <span class="text-gray-400">
+              {moment(glide.date.toDate().toISOString()).fromNow()}
+            </span>
           </div>
           <div class="text-gray-400 cursor-pointer transition hover:text-red-400">
             <div class="icon">
@@ -45,9 +45,7 @@
           </div>
           <span class="text-xs ml-3">{glide.subglidesCount}</span>
         </div>
-        <div
-          class="flex-it flex-row items-center cursor-pointer transition hover:text-pink-400"
-        >
+        <div class="flex-it flex-row items-center cursor-pointer transition hover:text-pink-400">
           <div class="icon">
             <TiHeartOutline />
           </div>
