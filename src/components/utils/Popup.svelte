@@ -2,6 +2,7 @@
   import { beforeUpdate, afterUpdate, onMount, onDestroy } from "svelte";
   import Portal from "./Portal.svelte";
   import { clickOutside } from "@actions/clickOutside";
+  import { logoutUser } from "@api/auth";
 
   let isOpen = false;
   let openerMenu;
@@ -48,6 +49,11 @@
   function isPopupClicked(targetElement) {
     return popup.contains(targetElement);
   }*/
+
+  async function logout() {
+    await logoutUser();
+    //window.location.reload();
+  }
 </script>
 
 <div class="flex-it">
@@ -73,7 +79,12 @@
       >
         <div class="w-72 min-w-68 max-h-120 min-h-8 flex-it overflow-auto">
           <div class="flex-it flex-grow flex-shrink py-3">
-            <div class="flex-it px-4 py-3 transition hover:bg-gray-700">Logout</div>
+            <button
+              on:click={logout}
+              class="flex-it items-start px-4 py-3 transition hover:bg-gray-700"
+            >
+              Logout
+            </button>
           </div>
         </div>
       </div>

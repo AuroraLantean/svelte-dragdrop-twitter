@@ -1,6 +1,15 @@
 import { firebaseAuth, db } from "@db/index";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
+
+function logoutUser() {
+  return signOut(firebaseAuth);
+}
+
+async function loginUser(form) {
+  const { user } = await signInWithEmailAndPassword(firebaseAuth, form.email, form.password);
+  return user;
+}
 
 async function registerUser(form) {
   console.log("api/auth/registerUser. form:", form);
@@ -27,4 +36,8 @@ async function registerUser(form) {
   return registeredUser;
 }
 
-export { registerUser };
+function authenticate(form, type) {
+  return type === "login" ? loginUser(form) : registerUser(form);
+}
+
+export { logoutUser, authenticate };

@@ -8,9 +8,11 @@
   });
   //console.log($form);
 
-  function handleFormSubmit(loginFormData) {
+  export let onFormSubmit;
+  export let loading;
+  /*function handleFormSubmit(loginFormData) {
     alert(JSON.stringify(loginFormData));
-  }
+  }*/
   /*function handleEnter(event) {
     onEnterKeyUp(event, submitForm);
   }*/
@@ -19,7 +21,7 @@
       event.preventDefault();
       // By using `preventDefault`, it tells the Browser not to handle the key stroke for its own shortcuts or text input.
       console.log("enter is detected");
-      submitForm();
+      submitForm(onFormSubmit)();
     }
   }
 </script>
@@ -61,7 +63,8 @@
     </div>
     <div class="flex-it py-2">
       <button
-        on:click={submitForm(handleFormSubmit)}
+        on:click={submitForm(onFormSubmit)}
+        disabled={loading}
         type="button"
         class="
               bg-blue-400 hover:bg-blue-500

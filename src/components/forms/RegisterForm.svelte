@@ -9,7 +9,7 @@
   } from "@stores/createFormStore";
   import FormErrors from "./FormErrors.svelte";
 
-// form is removed, because it enables direct access to the form store via  bind:value={$form.fullName}. better use event to set form store
+  // form is removed, because it enables direct access to the form store via  bind:value={$form.fullName}. better use event to set form store
   const { validate, submitForm, setValue, errors } = createFormStore({
     fullName: "",
     nickName: "",
@@ -20,6 +20,7 @@
   });
 
   export let onFormSubmit;
+  export let loading;
   //this is a callback function, whose argument will be given inside the caller function!
   /*function handleFormSubmit(formData) {
     alert(JSON.stringify(formData));
@@ -113,10 +114,7 @@
           </label>
           <input
             on:input={setValue}
-            use:validate={[
-              requiredValidator,
-              (ele) => compareWithValidator(ele, "password")
-              ]}
+            use:validate={[requiredValidator, (ele) => compareWithValidator(ele, "password")]}
             on:keyup={onEnterKeyUp}
             type="password"
             name="passwordConfirmation"
@@ -134,6 +132,7 @@
     <div class="flex-it py-2">
       <button
         on:click={submitForm(onFormSubmit)}
+        disabled={loading}
         type="button"
         class="
             bg-blue-400 hover:bg-blue-500 focus:ring-0

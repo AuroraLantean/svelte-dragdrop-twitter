@@ -6,8 +6,11 @@
   import { navLinks } from "./navLinks";
   //console.log(navLinks);
   import { getUIContext } from "@components/context/UI";
+  import { getAuthContext } from "@components/context/auth";
 
   const { isXl } = getUIContext();
+  const { auth } = getAuthContext();
+  $: user = $auth?.user;
 </script>
 
 <header class="lg:flex-grow flex-it items-end">
@@ -81,15 +84,11 @@
             >
               <div class="flex-it">
                 <div class="w-10 h-10 overflow-visible">
-                  <img
-                    alt=""
-                    class="rounded-full"
-                    src="https://www.pinclipart.com/picdir/middle/133-1331433_free-user-avatar-icons-happy-flat-design-png.png"
-                  />
+                  <img alt="" class="rounded-full" src={user?.avatar} />
                 </div>
               </div>
               <div class="flex-it xl:flex hidden flex-grow flex-row justify-between items-center">
-                <div class="flex-it mx-3 font-bold">Filip99</div>
+                <div class="flex-it mx-3 font-bold">{user?.nickName}</div>
                 <div class="flex-it">
                   <div class="icon">
                     <TiSocialFlickr />

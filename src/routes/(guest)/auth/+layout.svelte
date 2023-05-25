@@ -1,16 +1,16 @@
-
 <script>
   import { goto } from "$app/navigation";
   import { getAuthContext } from "@components/context/auth";
 
-  const { isAuthenticated } = getAuthContext();
+  const { auth } = getAuthContext();
 
-  if ($isAuthenticated) {
-    goto("/");
+  $: {
+    if ($auth.isAuthenticated) {
+      goto("/");
+    }
   }
 </script>
 
-{#if !$isAuthenticated}
+{#if !$auth.isAuthenticated}
   <slot />
 {/if}
-
