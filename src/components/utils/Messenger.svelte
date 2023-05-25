@@ -1,16 +1,20 @@
 <script>
-    import { onMount } from 'svelte'
+  import { onMount } from "svelte";
   import { getAuthContext } from "@components/context/auth";
+  import { getUIContext } from "@components/context/UI";
   import TiImageOutline from "svelte-icons/ti/TiImageOutline.svelte";
   const { auth } = getAuthContext();
   $: user = $auth?.user;
 
+  const { addSnackbar } = getUIContext();
+
   let glideContent = "";
   let glideInput;
-  onMount(() => glideInput.focus())
+  onMount(() => glideInput.focus());
 
   function createGlide() {
     console.log("Should create a new glide!");
+    addSnackbar("Glide Created!", "success");
   }
   /**
     console.log("CreateGlide:", glideContent);
@@ -34,22 +38,15 @@
       event.preventDefault();
       // By using `preventDefault`, it tells the Browser not to handle the key stroke for its own shortcuts or text input.
       console.log("enter is detected");
-      createGlide()
+      createGlide();
     }
   }
 </script>
 
-
 <div class="flex-it py-1 px-4 flex-row">
   <div class="flex-it mr-4">
-    <div
-      class="w-12 h-12 overflow-visible cursor-pointer transition duration-200 hover:opacity-80"
-    >
-      <img
-        alt=""
-        class="rounded-full"
-        src={user?.avatar}
-      />
+    <div class="w-12 h-12 overflow-visible cursor-pointer transition duration-200 hover:opacity-80">
+      <img alt="" class="rounded-full" src={user?.avatar} />
     </div>
   </div>
 
@@ -67,9 +64,7 @@
       />
     </div>
     <div class="flex-it mb-1 flex-row xs:justify-between items-center">
-      <div
-        class="flex-it mt-3 mr-3 cursor-pointer text-white hover:text-blue-400 transition"
-      >
+      <div class="flex-it mt-3 mr-3 cursor-pointer text-white hover:text-blue-400 transition">
         <div class="upload-btn-wrapper">
           <div class="icon">
             <TiImageOutline />
@@ -85,9 +80,7 @@
           disabled:cursor-not-allowed disabled:bg-gray-400
           bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition duration-200"
         >
-          <div
-            class="flex-it flex-row text-sm font-bold text-white items-start justify-center"
-          >
+          <div class="flex-it flex-row text-sm font-bold text-white items-start justify-center">
             <span>Glide It</span>
           </div>
         </button>
