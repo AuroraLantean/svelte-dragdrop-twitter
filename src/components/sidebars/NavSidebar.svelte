@@ -27,20 +27,6 @@
           </div>
           <div class="my-1 w-full flex-it">
             <nav class="flex-it items-start">
-              <a class="flex-it items-start flex-grow w-full" href="/">
-                <div
-                  class="p-3 flex-row justify-center items-center flex-it rounded-3xl hover:bg-gray-800 hover:rounded-3xl transition duration-200"
-                >
-                  <div class="flex-it">
-                    <div class="icon">
-                      <TiHomeOutline />
-                    </div>
-                  </div>
-                  <div class="mx-4 text-2xl truncate xl:block hidden">
-                    <span class="truncate">Home</span>
-                  </div>
-                </div>
-              </a>
               {#each navLinks as link}
                 <a class="flex-it items-start flex-grow w-full" href={link.href}>
                   <div

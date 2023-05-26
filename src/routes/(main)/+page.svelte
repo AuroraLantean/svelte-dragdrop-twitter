@@ -1,11 +1,12 @@
 <script>
-  //console.log("Calling routes/page!");
-  //export let data;
   import Messenger from "@components/utils/Messenger.svelte";
   import { createGlideStore } from "@stores/createGlideStore";
   import PaginatedGlides from "@components/glides/PaginatedGlides.svelte";
+  import { pageStore } from "@stores/pageStore";
 
   const { pages, loading, uiAddPost, loadGlides } = createGlideStore();
+  
+  pageStore.title.set("Home");
 </script>
 
 <Messenger {uiAddPost} />
