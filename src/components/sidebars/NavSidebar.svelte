@@ -7,9 +7,13 @@
   //console.log(navLinks);
   import { getUIContext } from "@components/context/UI";
   import { getAuthContext } from "@components/context/auth";
+  import Modal from "@components/utils/Modal.svelte";
+  import Messenger from "@components/utils/Messenger.svelte";
+  import { pageStore } from "@stores/pageStore";
 
   const { isXl } = getUIContext();
   const { auth } = getAuthContext();
+  const { activeGlide } = pageStore;
   $: user = $auth?.user;
 </script>
 
@@ -45,22 +49,33 @@
               {/each}
             </nav>
           </div>
-          <!-- GLIDER SEND-MESSAGE BUTTON -->
-          <div class="my-1 flex-it w-10/12 cursor-pointer">
-            <div
-              class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition"
+
+          <Modal let:openModal let:closeModal>
+            <button
+              slot="opener"
+              on:click|stopPropagation={openModal}
+              class="my-1 flex-it w-10/12 cursor-pointer"
             >
               <div
-                class="flex-it flex-row text-xl font-bold text-white items-start justify-center truncate duration-200"
+                class="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-full flex-it transition"
               >
-                {#if $isXl}
-                  <div>Glide It</div>
-                {:else}
-                  <div class="icon"><TiBrush /></div>
-                {/if}
+                <div
+                  class="flex-it flex-row text-xl font-bold text-white items-start justify-center truncate duration-200"
+                >
+                  {#if $isXl}
+                    <div>Glide It</div>
+                  {:else}
+                    <div class="icon"><TiBrush /></div>
+                  {/if}
+                </div>
               </div>
+            </button>
+            <div slot="modal-content">
+              <Messenger
+                uiAddPost={(glide) => closeModal()}
+              />
             </div>
-          </div>
+          </Modal>
         </div>
         <!-- PROFILE MENU -->
         <div class="flex-it hover:cursor-pointer">

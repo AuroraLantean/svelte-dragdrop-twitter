@@ -5,7 +5,7 @@
   import { pageStore } from "@stores/pageStore";
 
   const { pages, loading, uiAddPost, loadGlides } = createGlideStore();
-  
+
   pageStore.title.set("Home");
 </script>
 
@@ -18,4 +18,3 @@
 <!-- {#each $glides as glide (glide.id)}
   <GlidePost {glide} />
 {/each} -->
-
