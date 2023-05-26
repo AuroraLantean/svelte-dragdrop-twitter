@@ -1,17 +1,23 @@
 import { db } from "@db/index";
-import { Timestamp, doc, collection, getDocs, getDoc, query, addDoc, orderBy, limit } from "firebase/firestore";
+import { Timestamp, doc, collection, getDocs, getDoc, query, addDoc, orderBy, limit, startAfter } from "firebase/firestore";
 
 // const userRef = doc(db, "glide", glide.id);
 
-async function fetchGlides() {
+async function fetchGlides(lastGlideDoc) {
   console.log("fetchGlides()");
   const constraints = [
     orderBy("date", "desc"),
     limit(10)
   ];
+  console.log("lastGlideDoc:", lastGlideDoc, ", LastGlideDoc id: " + lastGlideDoc?.id);
+  if (lastGlideDoc) {//but the lastGlideDoc from the last page is also undefined => check page > 1 at createGlideStore/loadGlide()
+    constraints.push(startAfter(lastGlideDoc));
+  }
+
   const q = query(collection(db, "glides"), ...constraints);
   const qSnapshot = await getDocs(q);
 
+  const _lastGlideDoc = qSnapshot.docs[qSnapshot.docs.length - 1];
   const glides = await Promise.all(
     qSnapshot.docs.map(async (doc) => {
       const glide = doc.data();
@@ -22,7 +28,7 @@ async function fetchGlides() {
     })
   );
 
-  return { glides };
+  return { glides, lastGlideDoc: _lastGlideDoc };
 }
 
 async function dbAddPost(glideData) {

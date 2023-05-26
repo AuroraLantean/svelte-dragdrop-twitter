@@ -2,21 +2,19 @@
   //console.log("Calling routes/page!");
   //export let data;
   import Messenger from "@components/utils/Messenger.svelte";
-  import GlidePost from "../../components/glides/GlidePost.svelte";
   import { createGlideStore } from "@stores/createGlideStore";
-  import CenteredDataLoader from "@components/utils/CenteredDataLoader.svelte";
+  import PaginatedGlides from "@components/glides/PaginatedGlides.svelte";
 
-  const { glides, loading, uiAddPost } = createGlideStore();
+  const { pages, loading, uiAddPost, loadGlides } = createGlideStore();
 </script>
 
-<Messenger uiAddPost={uiAddPost} />
+<Messenger {uiAddPost} />
 
 <!-- {JSON.stringify(glides)} -->
 <div class="h-px bg-gray-700 my-1" />
-{#each $glides as glide (glide.id)}
-  <GlidePost {glide} />
-{/each}
 
-{#if $loading}
-  <CenteredDataLoader />
-{/if}
+<PaginatedGlides pages={$pages} loading={$loading} loadMoreGlides={loadGlides} />
+<!-- {#each $glides as glide (glide.id)}
+  <GlidePost {glide} />
+{/each} -->
+
